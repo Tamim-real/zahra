@@ -23,14 +23,14 @@ export const metadata = {
   description: "Your Online Store",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 
 
 
-        <Providers>
+        <Providers session={session}>
           <Navbar />
           <main className="min-h-screen">{children}</main>
         </Providers>

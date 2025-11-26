@@ -1,36 +1,38 @@
 'use client'
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import Link from "next/link";
 
 const slides = [
   {
     id: 1,
-    title: "Discover Timeless Artworks",
-    subtitle: "Experience the beauty of creation and imagination.",
+    title: "Timeless Monochrome Collection",
+    subtitle: "Discover classic black & white designs that never go out of style.",
     img: "https://nogor.com.bd/wp-content/uploads/2023/11/WEB-BANNER--scaled.avif",
     gradient: "from-[#2d1b3d] to-[#5d2a6e]",
   },
   {
     id: 2,
-    title: "Unleash Your Inner Artist",
-    subtitle: "Join our creative community and showcase your masterpieces.",
+    title: "Express Your Style with Nogor",
+    subtitle: "Showcase your unique taste with our premium T-shirts and hoodies.",
     img: "https://nogor.com.bd/wp-content/uploads/2023/11/Untitled-design-2-scaled.avif",
     gradient: "from-[#1a2a3d] to-[#0f172a]",
   },
   {
     id: 3,
-    title: "Explore The World Of Colors",
-    subtitle: "Dive into an inspiring collection of modern and abstract art.",
+    title: "Comfort Meets Creativity",
+    subtitle: "Explore vibrant joggers and casual wear for every artistic soul.",
     img: "https://nogor.com.bd/wp-content/uploads/2024/03/Web-Banner-3-png.avif",
     gradient: "from-[#4a1a5c] to-[#8b3a8a]",
   },
 ];
 
+
 const Slider = () => {
   const [current, setCurrent] = useState(0);
   const sectionRef = useRef(null);
 
-  // Animate slide content when current changes
+  
   useEffect(() => {
     const contents = sectionRef.current?.querySelectorAll(".slide-content");
     if (!contents) return;
@@ -83,12 +85,12 @@ const Slider = () => {
         <p className="slide-content max-w-2xl text-md font-light opacity-90 md:text-xl">
           {slides[current].subtitle}
         </p>
-        <a
-          href="#"
+        <Link
+          href="/explore"
           className="slide-content mt-6 rounded-xl bg-gray-200 px-6 py-3 font-semibold text-black shadow-xl transition-transform duration-300 hover:scale-105"
         >
           Explore Now
-        </a>
+        </Link>
       </div>
 
       {/* Navigation dots */}

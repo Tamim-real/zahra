@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";   // ✅ router import
+import { useRouter } from "next/navigation";   
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -12,12 +12,13 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const router = useRouter();   // ✅ router instance
+  const router = useRouter();   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -26,8 +27,19 @@ export default function SignupPage() {
       });
 
       if (res.ok) {
-        // alert("User created! You can login now.");
-        router.push("/");   // ✅ redirect to home page
+        // Auto-login after successful registration
+        const loginResult = await signIn("credentials", {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (loginResult?.error) {
+          setError("Registration successful, but auto-login failed. Please login manually.");
+        } else {
+          router.refresh(); // refresh session for Navbar
+          router.push("/feed"); // redirect to feed
+        }
       } else {
         const data = await res.json();
         setError(data.message || "Something went wrong!");
@@ -47,7 +59,7 @@ export default function SignupPage() {
         {/* Google Signup */}
         <div className="flex flex-col gap-4 mb-6">
           <button
-            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            onClick={() => signIn("google", { callbackUrl: "/feed" })}
             className="flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 hover:bg-gray-50 transition"
           >
             <FcGoogle size={20} /> Sign up with Google

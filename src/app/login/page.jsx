@@ -3,7 +3,6 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,18 +14,22 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    try {
-      const result = await signIn("credentials", {
-        redirect: true,
-        email,
-        password,
-        callbackUrl: "/",
-      });
-    } catch (err) {
-      setError("Login failed. Please check your credentials.");
-    } finally {
-      setLoading(false);
+
+    // Note: redirect: false lets us handle errors in client
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (result.error) {
+      setError("Invalid email or password"); // show error
+    } else {
+      // login successful → redirect manually
+      window.location.href = "/";
     }
+
+    setLoading(false);
   };
 
   return (
@@ -37,13 +40,11 @@ export default function Login() {
         {/* Social Login */}
         <div className="flex flex-col gap-4 mb-6">
           <button
-            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 hover:bg-gray-50 transition"
           >
             <FcGoogle size={20} /> Continue with Google
           </button>
-
-         
         </div>
 
         <div className="flex items-center gap-2 mb-4">
