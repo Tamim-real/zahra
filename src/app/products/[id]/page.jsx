@@ -12,7 +12,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/products/${id}`);
+        const res = await fetch(`https://zahra-server-pink.vercel.app/products/${id}`);
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
