@@ -29,7 +29,7 @@ export default function AddProducts() {
     };
 
     try {
-      const res = await fetch("https://zahra-server-pink.vercel.app/products", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),

@@ -1,3 +1,5 @@
+"use client";
+
 
 import CustomerReview from "./Components/CustomerReview";
 import Jersey from "./Components/Jersey";

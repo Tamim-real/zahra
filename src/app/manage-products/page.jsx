@@ -12,7 +12,7 @@ export default function Manage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://zahra-server-pink.vercel.app/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data);
@@ -40,10 +40,10 @@ export default function Manage() {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`https://zahra-server-pink.vercel.app/products/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
           method: "DELETE",
         });
-        if (!res.ok) throw new Error("Failed to delete product");
+        if (!res.ok) throw new Error("Failed to delete product"); 
 
         setProducts((prev) => prev.filter((p) => p._id !== id));
 

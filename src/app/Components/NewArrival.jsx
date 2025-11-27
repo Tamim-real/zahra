@@ -1,12 +1,20 @@
-'use client'
-import React, { useState } from "react";
+'use client';
+import React, { useState, useEffect } from "react";
 import { Eye, Heart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function NewArrival({ art, onView }) {
-  const [likes, setLikes] = useState(art?.likes || 0);
+  const [mounted, setMounted] = useState(false);
+  const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (art) setLikes(art.likes || 0);
+  }, [art]);
+
+  if (!mounted) return null; 
 
   function toggleLike(e) {
     e.stopPropagation();
@@ -25,7 +33,6 @@ export default function NewArrival({ art, onView }) {
                  transform transition duration-500 hover:scale-[1.03]"
       aria-label={`Artwork card: ${art.title} by ${art.created_by}`}
     >
-      {/* Image */}
       <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
         <Image
           src={art.image}
@@ -35,13 +42,11 @@ export default function NewArrival({ art, onView }) {
           loading="lazy"
         />
 
-        {/* Category badge */}
         <div className="absolute top-3 left-3 bg-white/70 dark:bg-gray-700/70 backdrop-blur-md 
                         px-3 py-1 rounded-full text-xs font-semibold text-gray-700 dark:text-gray-200 shadow">
           {art.category}
         </div>
 
-        {/* Like button */}
         <button
           onClick={toggleLike}
           className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md shadow 
@@ -49,10 +54,8 @@ export default function NewArrival({ art, onView }) {
                       hover:scale-110`}
         >
           <Heart className="h-5 w-5" fill={liked ? "currentColor" : "none"} />
-          
         </button>
 
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent 
                         opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-5">
           <h3 className="text-lg font-bold text-white drop-shadow">{art.title}</h3>
@@ -61,9 +64,7 @@ export default function NewArrival({ art, onView }) {
 
           <Link
             href="/explore"
-            onClick={() => {
-              if (onView) onView(art);
-            }}
+            onClick={() => onView?.(art)}
             className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold 
                        bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 
                        text-white shadow-lg transition transform hover:-translate-y-0.5"
