@@ -9,10 +9,11 @@ export default function Manage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+        const res = await fetch("/api/products");
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data);
@@ -40,10 +41,11 @@ export default function Manage() {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
+        const res = await fetch(`/api/products/${id}`, {
           method: "DELETE",
         });
-        if (!res.ok) throw new Error("Failed to delete product"); 
+
+        if (!res.ok) throw new Error("Failed to delete product");
 
         setProducts((prev) => prev.filter((p) => p._id !== id));
 

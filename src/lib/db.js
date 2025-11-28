@@ -1,10 +1,11 @@
-
 import { MongoClient } from "mongodb";
 
 let client;
 let clientPromise;
 
-if (!process.env.MONGODB_URI) throw new Error("Missing MongoDB URI");
+if (!process.env.MONGODB_URI) {
+  throw new Error("Missing MongoDB URI");
+}
 
 if (process.env.NODE_ENV === "development") {
   if (!global._mongoClientPromise) {

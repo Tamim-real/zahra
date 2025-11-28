@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import DatePicker from "react-datepicker";
@@ -22,14 +22,14 @@ export default function AddProducts() {
       title,
       shortDesc,
       fullDesc,
-      price,
+      price: Number(price),
       date: date ? date.toISOString().split("T")[0] : "",
       priority,
       imageUrl: imageUrl || null,
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+      const res = await fetch("/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),
@@ -40,8 +40,15 @@ export default function AddProducts() {
       await res.json();
       toast.success("✨ Product added successfully!");
 
-      setTitle(""); setShortDesc(""); setFullDesc("");
-      setPrice(""); setDate(null); setPriority(""); setImageUrl("");
+      // Reset form fields
+      setTitle(""); 
+      setShortDesc(""); 
+      setFullDesc(""); 
+      setPrice(""); 
+      setDate(null); 
+      setPriority(""); 
+      setImageUrl("");
+
     } catch (error) {
       console.error(error);
       toast.error("❌ Something went wrong!");
@@ -65,13 +72,10 @@ export default function AddProducts() {
             <FloatingInput label="Short Description" value={shortDesc} setValue={setShortDesc} required />
           </div>
 
-
           <FloatingTextarea label="Full Description" value={fullDesc} setValue={setFullDesc} required />
-
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FloatingInput label="Price" type="number" value={price} setValue={setPrice} required />
-
 
             <div className="relative">
               <DatePicker
@@ -82,14 +86,12 @@ export default function AddProducts() {
               />
               <label
                 className={`absolute left-0 transition-all text-gray-400 
-      ${date ? "-top-2 text-sm text-purple-500" : "top-3 text-base"}`}
+                  ${date ? "-top-2 text-sm text-purple-500" : "top-3 text-base"}`}
               >
                 Date
               </label>
             </div>
 
-
-            {/* ✅ Priority Dropdown */}
             <div className="relative">
               <select
                 value={priority}
@@ -109,7 +111,6 @@ export default function AddProducts() {
             </div>
           </div>
 
-          {/* Image URL & Preview */}
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <FloatingInput label="Image URL (optional)" value={imageUrl} setValue={setImageUrl} />
             {imageUrl && (
@@ -119,7 +120,6 @@ export default function AddProducts() {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -161,7 +161,6 @@ function FloatingInput({ label, type = "text", value, setValue, required = false
     </div>
   );
 }
-
 
 function FloatingTextarea({ label, value, setValue, required = false }) {
   return (

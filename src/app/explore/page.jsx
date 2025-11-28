@@ -8,15 +8,14 @@ export default function Explore() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [sortPrice, setSortPrice] = useState("none"); // none, asc, desc
+  const [sortPrice, setSortPrice] = useState("none");
   const router = useRouter();
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/products`);
-        if (!res.ok) throw new Error("Failed to fetch products");
+        const res = await fetch("/api/products");
+        if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
@@ -26,20 +25,19 @@ export default function Explore() {
         setLoading(false);
       }
     };
+
     fetchProducts();
   }, []);
 
   useEffect(() => {
     let tempProducts = [...products];
 
-    // Filter by title
     if (search.trim() !== "") {
       tempProducts = tempProducts.filter((p) =>
         p.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    // Sort by price
     if (sortPrice === "asc") {
       tempProducts.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (sortPrice === "desc") {
@@ -61,7 +59,7 @@ export default function Explore() {
     <div className="min-h-screen bg-gray-50 mt-20 p-6 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-purple-700 mb-6 text-center">Explore Products</h1>
 
-      {/* Search & Sort Bar */}
+      {/* Search & Sort */}
       <div className="w-full max-w-4xl mb-8 flex flex-col md:flex-row gap-4">
         <input
           type="text"
@@ -70,7 +68,6 @@ export default function Explore() {
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 p-3 rounded-xl shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
         />
-
         <select
           value={sortPrice}
           onChange={(e) => setSortPrice(e.target.value)}
@@ -92,11 +89,6 @@ export default function Explore() {
             key={product._id}
             className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-white rounded-2xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-105 group"
           >
-            {/* Shining overlay on hover */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="shimmer absolute w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 animate-shimmer"></div>
-            </div>
-
             {product.imageUrl && (
               <div className="relative w-full h-64">
                 <Image
@@ -108,7 +100,6 @@ export default function Explore() {
                 />
               </div>
             )}
-
             <div className="p-4 flex flex-col justify-between h-48">
               <div>
                 <h2 className="text-lg font-bold text-purple-700">{product.title}</h2>
@@ -125,21 +116,6 @@ export default function Explore() {
           </div>
         ))}
       </div>
-
-      {/* Custom CSS for shimmer effect */}
-      <style jsx>{`
-        .shimmer {
-          top: 0;
-          left: -50%;
-        }
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }
