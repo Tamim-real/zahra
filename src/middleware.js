@@ -8,8 +8,8 @@ export default withAuth({
 
 export const config = {
   matcher: [
-    "/feed",
-    "/add-products",
-    "/manage-products",
+    "/add-products/:path*",
+    "/manage-products/:path*",
+    "/feed/:path*",
   ],
 };

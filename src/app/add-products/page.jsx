@@ -1,10 +1,15 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function AddProducts() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [title, setTitle] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [fullDesc, setFullDesc] = useState("");
@@ -14,8 +19,17 @@ export default function AddProducts() {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session) router.push("/login");
+  }, [session, status]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!date) return toast.error("❗ Please select a date");
+
+    if (!priority) return toast.error("❗ Please select a priority");
+
     setLoading(true);
 
     const newProduct = {
@@ -23,7 +37,7 @@ export default function AddProducts() {
       shortDesc,
       fullDesc,
       price: Number(price),
-      date: date ? date.toISOString().split("T")[0] : "",
+      date: date.toISOString().split("T")[0],
       priority,
       imageUrl: imageUrl || null,
     };
@@ -40,15 +54,8 @@ export default function AddProducts() {
       await res.json();
       toast.success("✨ Product added successfully!");
 
-      // Reset form fields
-      setTitle(""); 
-      setShortDesc(""); 
-      setFullDesc(""); 
-      setPrice(""); 
-      setDate(null); 
-      setPriority(""); 
-      setImageUrl("");
-
+      setTitle(""); setShortDesc(""); setFullDesc("");
+      setPrice(""); setDate(null); setPriority(""); setImageUrl("");
     } catch (error) {
       console.error(error);
       toast.error("❌ Something went wrong!");
@@ -56,6 +63,8 @@ export default function AddProducts() {
       setLoading(false);
     }
   };
+
+  if (status === "loading") return <p className="text-center mt-20 text-purple-600">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-indigo-200 flex items-center justify-center p-6">
@@ -66,7 +75,6 @@ export default function AddProducts() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FloatingInput label="Product Title" value={title} setValue={setTitle} required />
             <FloatingInput label="Short Description" value={shortDesc} setValue={setShortDesc} required />
@@ -84,10 +92,8 @@ export default function AddProducts() {
                 dateFormat="yyyy-MM-dd"
                 className="w-full border-b-2 border-gray-300 focus:border-purple-500 outline-none py-3 bg-transparent"
               />
-              <label
-                className={`absolute left-0 transition-all text-gray-400 
-                  ${date ? "-top-2 text-sm text-purple-500" : "top-3 text-base"}`}
-              >
+              <label className={`absolute left-0 transition-all text-gray-400 
+                ${date ? "-top-2 text-sm text-purple-500" : "top-3 text-base"}`}>
                 Date
               </label>
             </div>
@@ -96,6 +102,7 @@ export default function AddProducts() {
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
+                required
                 className="peer w-full border-b-2 border-gray-300 focus:border-purple-500 outline-none py-3 bg-transparent"
               >
                 <option value="" disabled>Select Priority</option>
@@ -104,8 +111,8 @@ export default function AddProducts() {
                 <option value="Low">Low</option>
               </select>
               <label className="absolute left-0 top-3 text-gray-400 text-base transition-all 
-                                peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
-                                peer-valid:-top-2 peer-valid:text-sm">
+                peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
+                peer-valid:-top-2 peer-valid:text-sm">
                 Priority
               </label>
             </div>
@@ -124,9 +131,9 @@ export default function AddProducts() {
             type="submit"
             disabled={loading}
             className={`w-full bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 
-                        text-white font-bold py-4 rounded-xl shadow-xl transform transition 
-                        hover:scale-105 flex justify-center items-center gap-3 
-                        ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+              text-white font-bold py-4 rounded-xl shadow-xl transform transition 
+              hover:scale-105 flex justify-center items-center gap-3 
+              ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
             {loading && (
               <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -134,7 +141,7 @@ export default function AddProducts() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
             )}
-            {loading ? "Adding..." : " Add Product"}
+            {loading ? "Adding..." : "Add Product"}
           </button>
         </form>
       </div>
@@ -154,8 +161,8 @@ function FloatingInput({ label, type = "text", value, setValue, required = false
         className="peer w-full border-b-2 border-gray-300 focus:border-purple-500 outline-none py-3 bg-transparent"
       />
       <label className="absolute left-0 top-3 text-gray-400 text-base transition-all 
-                        peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
-                        peer-valid:-top-2 peer-valid:text-sm">
+        peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
+        peer-valid:-top-2 peer-valid:text-sm">
         {label}
       </label>
     </div>
@@ -173,8 +180,8 @@ function FloatingTextarea({ label, value, setValue, required = false }) {
         className="peer w-full border-b-2 border-gray-300 focus:border-purple-500 outline-none py-3 bg-transparent resize-none"
       ></textarea>
       <label className="absolute left-0 top-3 text-gray-400 text-base transition-all 
-                        peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
-                        peer-valid:-top-2 peer-valid:text-sm">
+        peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-500 
+        peer-valid:-top-2 peer-valid:text-sm">
         {label}
       </label>
     </div>
