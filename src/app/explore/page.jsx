@@ -8,19 +8,25 @@ export default function Explore() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [sortPrice, setSortPrice] = useState("none");
+  const [sortPrice, setSortPrice] = useState("none"); // none | asc | desc
   const router = useRouter();
 
+  // Fetch all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch("/api/products");
         if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
         const data = await res.json();
-        setProducts(data);
-        setFilteredProducts(data);
+        // Ensure _id is a string
+        const productsWithStringId = data.map(p => ({
+          ...p,
+          _id: p._id.toString()
+        }));
+        setProducts(productsWithStringId);
+        setFilteredProducts(productsWithStringId);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -29,15 +35,18 @@ export default function Explore() {
     fetchProducts();
   }, []);
 
+  // Filter & sort products
   useEffect(() => {
     let tempProducts = [...products];
 
+    // Filter by search
     if (search.trim() !== "") {
-      tempProducts = tempProducts.filter((p) =>
+      tempProducts = tempProducts.filter(p =>
         p.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
+    // Sort by price
     if (sortPrice === "asc") {
       tempProducts.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (sortPrice === "desc") {
@@ -84,11 +93,13 @@ export default function Explore() {
         {filteredProducts.length === 0 && (
           <p className="text-center text-gray-500 col-span-full">No products found</p>
         )}
+
         {filteredProducts.map((product) => (
           <div
             key={product._id}
             className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-white rounded-2xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-105 group"
           >
+            {/* Product Image */}
             {product.imageUrl && (
               <div className="relative w-full h-64">
                 <Image
@@ -100,14 +111,25 @@ export default function Explore() {
                 />
               </div>
             )}
+
+            {/* Product Info */}
             <div className="p-4 flex flex-col justify-between h-48">
               <div>
                 <h2 className="text-lg font-bold text-purple-700">{product.title}</h2>
                 <p className="text-gray-500 text-sm mt-1">{product.shortDesc}</p>
                 <p className="text-gray-800 font-semibold mt-2">${product.price}</p>
               </div>
+
+              {/* View Details Button */}
               <button
-                onClick={() => router.push(`/products/${product._id}`)}
+                onClick={() => {
+                  // Safe navigation
+                  if (product._id && product._id.length === 24) {
+                    router.push(`/products/${product._id}`);
+                  } else {
+                    console.error("Invalid product ID:", product._id);
+                  }
+                }}
                 className="mt-4 w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-lg transition"
               >
                 View Details

@@ -4,14 +4,13 @@ import { ObjectId } from "mongodb";
 export async function GET(req, { params }) {
   let id = params.id?.trim();
 
-  // Remove trailing slash if present
-  if (id.endsWith("/")) {
+  // remove trailing slash if present
+  if (id?.endsWith("/")) {
     id = id.slice(0, -1);
   }
 
-  // Validate ID format
   if (!ObjectId.isValid(id)) {
-    return new Response(JSON.stringify({ message: "Invalid product ID format" }), {
+    return new Response(JSON.stringify({ message: "Invalid product ID" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -24,7 +23,7 @@ export async function GET(req, { params }) {
 
     let product = await collection.findOne({ _id: new ObjectId(id) });
 
-    // Fallback: try string _id if ObjectId fails
+    // fallback if _id was saved as string
     if (!product) {
       product = await collection.findOne({ _id: id });
     }
