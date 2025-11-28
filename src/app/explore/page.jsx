@@ -8,10 +8,10 @@ export default function Explore() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [sortPrice, setSortPrice] = useState("none"); // none | asc | desc
+  const [sortPrice, setSortPrice] = useState("none"); 
   const router = useRouter();
 
-  // Fetch all products
+ 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -35,18 +35,17 @@ export default function Explore() {
     fetchProducts();
   }, []);
 
-  // Filter & sort products
+ 
   useEffect(() => {
     let tempProducts = [...products];
 
-    // Filter by search
+  
     if (search.trim() !== "") {
       tempProducts = tempProducts.filter(p =>
         p.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    // Sort by price
     if (sortPrice === "asc") {
       tempProducts.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (sortPrice === "desc") {
@@ -68,7 +67,7 @@ export default function Explore() {
     <div className="min-h-screen bg-gray-50 mt-20 p-6 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-purple-700 mb-6 text-center">Explore Products</h1>
 
-      {/* Search & Sort */}
+
       <div className="w-full max-w-4xl mb-8 flex flex-col md:flex-row gap-4">
         <input
           type="text"
@@ -88,7 +87,6 @@ export default function Explore() {
         </select>
       </div>
 
-      {/* Products Grid */}
       <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filteredProducts.length === 0 && (
           <p className="text-center text-gray-500 col-span-full">No products found</p>
@@ -99,7 +97,7 @@ export default function Explore() {
             key={product._id}
             className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-white rounded-2xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-105 group"
           >
-            {/* Product Image */}
+           
             {product.imageUrl && (
               <div className="relative w-full h-64">
                 <Image
@@ -112,7 +110,7 @@ export default function Explore() {
               </div>
             )}
 
-            {/* Product Info */}
+           
             <div className="p-4 flex flex-col justify-between h-48">
               <div>
                 <h2 className="text-lg font-bold text-purple-700">{product.title}</h2>
@@ -120,10 +118,10 @@ export default function Explore() {
                 <p className="text-gray-800 font-semibold mt-2">${product.price}</p>
               </div>
 
-              {/* View Details Button */}
+              
               <button
                 onClick={() => {
-                  // Safe navigation
+                 
                   if (product._id && product._id.length === 24) {
                     router.push(`/products/${product._id}`);
                   } else {
