@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 export async function GET(req, { params }) {
   try {
     const { id } = params;
+
     if (!ObjectId.isValid(id)) {
       return new Response(JSON.stringify({ message: "Invalid product ID" }), { status: 400 });
     }
