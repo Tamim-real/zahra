@@ -12,7 +12,8 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`); 
+        // Use relative path for App Router
+        const res = await fetch(`/api/products/${id}`);
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
@@ -22,11 +23,19 @@ export default function ProductDetail() {
         setLoading(false);
       }
     };
-    fetchProduct();
+    if (id) fetchProduct();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-20 text-purple-700">Loading...</p>;
-  if (!product) return <p className="text-center mt-20 text-red-500">Product not found</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-20 text-purple-700 text-lg">Loading...</p>
+    );
+  if (!product)
+    return (
+      <p className="text-center mt-20 text-red-500 text-lg">
+        Product not found
+      </p>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50 mt-20 p-6 flex justify-center">
@@ -35,7 +44,6 @@ export default function ProductDetail() {
           {product.title}
         </h1>
 
-       
         {product.imageUrl && (
           <div className="relative w-full h-[500px] mb-8 overflow-hidden rounded-3xl clip-custom">
             <Image
@@ -44,7 +52,7 @@ export default function ProductDetail() {
               fill
               className="object-cover rounded-3xl transform transition duration-500 hover:scale-105"
             />
-            {/* Shining overlay */}
+            {/* Shimmer overlay */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
               <div className="shimmer absolute w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
             </div>
@@ -62,7 +70,6 @@ export default function ProductDetail() {
         </button>
       </div>
 
-      
       <style jsx>{`
         /* Responsive clip-path */
         .clip-custom {
@@ -80,8 +87,12 @@ export default function ProductDetail() {
           left: -50%;
         }
         @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
         }
         .animate-shimmer {
           animation: shimmer 2s infinite;
