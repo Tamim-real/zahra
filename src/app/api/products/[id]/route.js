@@ -9,7 +9,7 @@ export async function GET(req, { params }) {
     }
 
     const client = await connectToDB();
-    const db = client.db("testDBUser"); // your DB name
+    const db = client.db("testDBUser"); // Your DB name
     const collection = db.collection("products");
 
     const product = await collection.findOne({ _id: new ObjectId(id) });
