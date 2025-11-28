@@ -10,10 +10,15 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id || id.length !== 24) {
+      console.error("Invalid product ID:", id);
+      setLoading(false);
+      return;
+    }
+
     const fetchProduct = async () => {
       try {
-        // Use relative path for App Router
-        const res = await fetch(`/api/products/${id}`);
+        const res = await fetch(`/api/products/${id}`); 
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
@@ -23,26 +28,16 @@ export default function ProductDetail() {
         setLoading(false);
       }
     };
-    if (id) fetchProduct();
+    fetchProduct();
   }, [id]);
 
-  if (loading)
-    return (
-      <p className="text-center mt-20 text-purple-700 text-lg">Loading...</p>
-    );
-  if (!product)
-    return (
-      <p className="text-center mt-20 text-red-500 text-lg">
-        Product not found
-      </p>
-    );
+  if (loading) return <p className="text-center mt-20 text-purple-700">Loading...</p>;
+  if (!product) return <p className="text-center mt-20 text-red-500">Product not found</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 mt-20 p-6 flex justify-center">
       <div className="w-11/12 lg:w-8/12 bg-white rounded-3xl shadow-2xl p-8">
-        <h1 className="text-4xl font-extrabold text-purple-700 mb-6 text-center">
-          {product.title}
-        </h1>
+        <h1 className="text-4xl font-extrabold text-purple-700 mb-6 text-center">{product.title}</h1>
 
         {product.imageUrl && (
           <div className="relative w-full h-[500px] mb-8 overflow-hidden rounded-3xl clip-custom">
@@ -52,7 +47,6 @@ export default function ProductDetail() {
               fill
               className="object-cover rounded-3xl transform transition duration-500 hover:scale-105"
             />
-            {/* Shimmer overlay */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
               <div className="shimmer absolute w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
             </div>
@@ -71,7 +65,6 @@ export default function ProductDetail() {
       </div>
 
       <style jsx>{`
-        /* Responsive clip-path */
         .clip-custom {
           clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%);
         }
@@ -80,23 +73,9 @@ export default function ProductDetail() {
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
           }
         }
-
-        /* Shimmer effect */
-        .shimmer {
-          top: 0;
-          left: -50%;
-        }
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(200%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
+        .shimmer { top: 0; left: -50%; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+        .animate-shimmer { animation: shimmer 2s infinite; }
       `}</style>
     </div>
   );
