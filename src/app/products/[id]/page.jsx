@@ -4,32 +4,49 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const params = useParams();
   const router = useRouter();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id || id.length !== 24) {
-      console.error("Invalid product ID:", id);
+    // Clean and validate the ID
+    let id = params?.id;
+    if (!id) {
+      console.error("No product ID provided");
+      setLoading(false);
+      return;
+    }
+
+    id = id.trim();              // Remove spaces
+    if (id.endsWith("/")) id = id.slice(0, -1); // Remove trailing slash
+
+    if (id.length !== 24) {
+      console.error("Invalid product ID length:", id);
       setLoading(false);
       return;
     }
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/api/products/${id}`); 
-        if (!res.ok) throw new Error("Failed to fetch product");
+        const res = await fetch(`/api/products/${id}`);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Failed to fetch product");
+        }
+
         const data = await res.json();
         setProduct(data);
       } catch (error) {
         console.error(error);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProduct();
-  }, [id]);
+  }, [params]);
 
   if (loading) return <p className="text-center mt-20 text-purple-700">Loading...</p>;
   if (!product) return <p className="text-center mt-20 text-red-500">Product not found</p>;
@@ -65,14 +82,8 @@ export default function ProductDetail() {
       </div>
 
       <style jsx>{`
-        .clip-custom {
-          clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%);
-        }
-        @media (min-width: 1024px) {
-          .clip-custom {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-          }
-        }
+        .clip-custom { clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%); }
+        @media (min-width: 1024px) { .clip-custom { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
         .shimmer { top: 0; left: -50%; }
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
         .animate-shimmer { animation: shimmer 2s infinite; }
