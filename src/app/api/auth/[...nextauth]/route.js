@@ -17,28 +17,37 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const client = await connectToDB();   
-        const db = client.db("testDBUser");   
-        const usersCollection = db.collection("users");
+        try {
+          const client = await connectToDB();
+          const db = client.db("testDBUser");
+          const usersCollection = db.collection("users");
 
-        const user = await usersCollection.findOne({ email: credentials.email });
-        if (!user) {
-          throw new Error("No user found!");
+          const user = await usersCollection.findOne({ email: credentials.email });
+          if (!user) throw new Error("No user found!");
+
+          const isValid = await verifyPassword(credentials.password, user.password);
+          if (!isValid) throw new Error("Invalid password!");
+
+          return { email: user.email, name: user.name, id: user._id.toString() };
+        } catch (err) {
+          throw new Error(err.message);
         }
-
-        const isValid = await verifyPassword(credentials.password, user.password);
-        if (!isValid) {
-          throw new Error("Invalid password!");
-        }
-
-        // ✅ don't close client, keep connection alive
-        return { email: user.email, name: user.name, id: user._id.toString() };
       },
     }),
   ],
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.id = user.id;
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) session.user.id = token.id;
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
