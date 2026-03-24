@@ -16,7 +16,11 @@
     "lucide-react": "^0.554.0",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
+<<<<<<< HEAD
     "next": "^16.2.1",
+=======
+    "next": "16.0.10",
+>>>>>>> b75d7724643e6c9463e2dd3bebf9f67769c5ca6d
     "next-auth": "^4.24.13",
     "react": "^19.2.0",
     "react-datepicker": "^8.10.0",
