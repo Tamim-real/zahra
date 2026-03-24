@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Providers from "./Components/Provider";
+import MobileBottomNav from "./Components/MobileBottomNav"; // Import korun
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,9 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          
+          
+          <MobileBottomNav /> 
         </Providers>
       </body>
     </html>
