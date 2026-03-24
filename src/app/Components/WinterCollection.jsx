@@ -34,7 +34,7 @@ const arts = [
 
 export default function WinterCollection() {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
             {arts.map((art) => (
                 <NewArrival key={art._id} art={art} />
             ))}

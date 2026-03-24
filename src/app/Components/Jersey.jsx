@@ -6,7 +6,7 @@ import NewArrival from "./NewArrival";
 const joggers = [
   {
     _id: "1",
-    title: "Premium Joggers",
+    title: "Premium Jersey",
     created_by: "Nogor Fashion",
     image: "https://nogor.com.bd/wp-content/uploads/2025/06/Arsenal-FC-Zigzag-Concept-Jersey-%E2%80%93-202526-Season.avif",
     category: "Jersey",
@@ -14,7 +14,7 @@ const joggers = [
   },
   {
     _id: "2",
-    title: "Premium Joggers (Gray Variant)",
+    title: "Classic Jersey (Gray Variant)",
     created_by: "Nogor Fashion",
     image: "https://nogor.com.bd/wp-content/uploads/2025/06/Real-Madrid-Official-Third-Kit-%E2%80%93-new.avif",
     category: "Jersey",
@@ -22,7 +22,7 @@ const joggers = [
   },
   {
     _id: "3",
-    title: "Premium Joggers (Black Variant)",
+    title: "Sports Jersy",
     created_by: "Nogor Fashion",
     image: "https://nogor.com.bd/wp-content/uploads/2025/05/Barcelona-Concept-Kit-Jersey-2025-%E2%80%93-Nogor-Edition.avif",
     category: "Jersey",
