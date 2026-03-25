@@ -6,7 +6,8 @@ const nextConfig = {
       "nogor.com.bd",
       "randomuser.me",
       "lh3.googleusercontent.com",
-      "i.pravatar.cc"
+      "i.pravatar.cc",
+      "static.nike.com"
     ],
   },
 };

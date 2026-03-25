@@ -3,8 +3,10 @@
 import CustomerReview from "./Components/CustomerReview";
 import Jersey from "./Components/Jersey";
 import NewArrivalList from "./Components/NewArrivalList";
+import ShoeSlider from "./Components/ShoeSlider";
 import Slider from "./Components/Slider";
 import WinterCollection from "./Components/WinterCollection";
+
 
 export default function Home() {
   return (
@@ -20,6 +22,17 @@ export default function Home() {
             NEW ARRIVAL
           </h1>
           <NewArrivalList />
+        </section>
+
+        {/* Infinite Smooth Slider Section - Winter Collection এর আগে */}
+        <section className="overflow-hidden">
+          <h1 className="text-xl md:text-3xl font-bold text-center my-6 border bg-gray-200 dark:bg-zinc-800 py-3 rounded-xl tracking-tight uppercase">
+            Featured Performance
+          </h1>
+          <div className="-mx-4 md:-mx-20 lg:-mx-40"> 
+            {/* -mx ব্যবহার করা হয়েছে যাতে স্লাইডারটি মেইন কন্টেইনারের বাইরে গিয়ে ফুল উইডথ পায় */}
+            <ShoeSlider />
+          </div>
         </section>
 
         {/* Winter Collection */}

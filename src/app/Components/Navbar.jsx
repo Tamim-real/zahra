@@ -39,7 +39,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-[60%] bg-white shadow-xl rounded-2xl px-6 py-3 flex items-center justify-between z-50">
+    <nav className=" fixed top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-[60%] bg-white shadow-xl rounded-2xl px-6 py-3 flex items-center justify-between z-50">
       
       {/* Logo */}
       <Link href="/" className="text-3xl font-bold tracking-wide">
