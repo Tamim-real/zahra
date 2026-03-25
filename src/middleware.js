@@ -10,6 +10,6 @@ export const config = {
   matcher: [
     "/add-products/:path*",
     "/manage-products/:path*",
-    "/feed/:path*",
+   
   ],
 };
