@@ -2,8 +2,15 @@ import { connectToDB } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
 export async function GET(req, { params }) {
-  let id = params.id?.trim();
-  if (id?.endsWith("/")) id = id.slice(0, -1);
+  // CRITICAL FIX: params ke await korte hobe
+  const resolvedParams = await params; 
+  let id = resolvedParams.id?.trim();
+
+  if (!id) {
+    return new Response(JSON.stringify({ message: "ID is required" }), { status: 400 });
+  }
+
+  if (id.endsWith("/")) id = id.slice(0, -1);
 
   try {
     const client = await connectToDB();
@@ -12,12 +19,12 @@ export async function GET(req, { params }) {
 
     let product = null;
 
-    // Try ObjectId first
+    // 1. Try ObjectId first
     if (ObjectId.isValid(id)) {
       product = await collection.findOne({ _id: new ObjectId(id) });
     }
 
-    // Fallback if stored as string
+    // 2. Fallback if stored as string
     if (!product) {
       product = await collection.findOne({ _id: id });
     }
@@ -35,7 +42,7 @@ export async function GET(req, { params }) {
     });
   } catch (error) {
     console.error("Error fetching product:", error);
-    return new Response(JSON.stringify({ message: "Server error" }), {
+    return new Response(JSON.stringify({ message: "Server error", error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

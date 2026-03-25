@@ -1,15 +1,19 @@
 'use client';
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation"; // useParams add kora hoyeche
 import Image from "next/image";
 
-export default function ProductDetail({ id }) {
+export default function ProductDetail() {
   const router = useRouter();
+  const params = useParams(); // params nite hobe
+  const id = params?.id; // URL theke id nawa hoyeche
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // ID jodi na thake ba 24 char na hoy (MongoDB ObjectId format)
     if (!id || id.length !== 24) {
       setError("Invalid product ID");
       setLoading(false);
@@ -18,6 +22,7 @@ export default function ProductDetail({ id }) {
 
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`/api/products/${id}`);
         const data = await res.json();
 
@@ -40,6 +45,7 @@ export default function ProductDetail({ id }) {
 
   if (loading) return <p className="text-center mt-20 text-purple-700">Loading...</p>;
   if (error) return <p className="text-center mt-20 text-red-500">{error}</p>;
+  if (!product) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 mt-20 p-6 flex justify-center">
@@ -54,6 +60,7 @@ export default function ProductDetail({ id }) {
               src={product.imageUrl}
               alt={product.title}
               fill
+              unoptimized={true} // Image na ashle eta help korbe
               className="object-cover rounded-3xl transform transition duration-500 hover:scale-105"
             />
           </div>
