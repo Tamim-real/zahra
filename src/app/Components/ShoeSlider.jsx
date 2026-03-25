@@ -90,7 +90,7 @@ export default function ShoeSlider() {
 
       <style jsx>{`
         .animate-fast-slide {
-          animation: slide 12s linear infinite;
+          animation: slide 15s linear infinite;
         }
         .animate-fast-slide:hover {
           animation-play-state: paused;
