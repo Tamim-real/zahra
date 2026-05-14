@@ -34,38 +34,51 @@ const shoes = [
 
 const ShoeCard = ({ shoe }) => {
   return (
-    <div className="relative group w-[340px] md:w-[420px] transition-all duration-700 p-8 flex-shrink-0">
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+    <div className="relative group w-[340px] md:w-[380px] perspective-1000 flex-shrink-0 px-4">
+      {/* Dynamic Glow */}
+      <div className="absolute -inset-8 bg-gradient-to-br from-purple-500 via-pink-500 to-violet-500 rounded-[60px] opacity-0 group-hover:opacity-30 blur-3xl transition-all duration-700" />
 
-      {/* Main Card - Rounded Shape [50px] */}
-      <div className="relative overflow-hidden rounded-[50px] bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-2xl backdrop-blur-xl">
+      {/* Main Card */}
+      <div className="relative bg-white/90 dark:bg-zinc-950/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[52px] overflow-hidden shadow-2xl transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_35px_60px_-15px_rgb(168,85,247,0.4)]">
         
-        {/* Image Section - Extra Margin and Rounded [40px] */}
-        <div className="relative aspect-[4/5] m-6 overflow-hidden rounded-[40px] z-10 flex items-center justify-center bg-zinc-50 dark:bg-zinc-800/50 transition-colors duration-500 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-800">
+        {/* Image Container */}
+        <div className="relative aspect-[4/4.2] m-6 mb-4 overflow-hidden rounded-[40px] bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800">
           <img
             src={shoe.image}
             alt={shoe.title}
-            className="w-[85%] h-auto object-contain transition-transform duration-[1.5s] ease-out group-hover:scale-110 group-hover:rotate-[-5deg] drop-shadow-2xl"
+            className="w-[88%] h-auto object-contain transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:rotate-[-8deg] drop-shadow-2xl"
           />
+
+          {/* Category Badge */}
+          <div className="absolute top-6 right-6 px-4 py-1.5 text-xs font-medium tracking-widest bg-black/70 text-white backdrop-blur-md rounded-full border border-white/20">
+            {shoe.category}
+          </div>
         </div>
 
-        {/* Content Area - Increased Padding */}
-        <div className="px-12 pb-16 pt-6">
-          <div className="flex justify-between items-start gap-4">
-            <div className="min-w-0 flex-1">
-              
-              <h3 className="text-2xl font-light text-zinc-900 dark:text-white leading-tight truncate">
-                {shoe.title.split(' ')[0]} <span className="font-black italic">{shoe.title.split(' ').slice(1).join(' ') || ''}</span>
+        {/* Content */}
+        <div className="px-10 pb-10">
+          <div className="flex justify-between items-end">
+            <div>
+              <h3 className="text-3xl font-light text-zinc-900 dark:text-white tracking-tighter">
+                {shoe.title.split(" ")[0]}{" "}
+                <span className="font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  {shoe.title.split(" ").slice(1).join(" ")}
+                </span>
               </h3>
+              <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">Nike • Limited Drop</p>
             </div>
-            
-            <div className="shrink-0">
-              <p className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+
+            <div className="text-right">
+              <p className="text-4xl font-black bg-gradient-to-br from-purple-500 to-pink-500 bg-clip-text text-transparent leading-none">
                 ${shoe.price}
               </p>
             </div>
           </div>
+
+          {/* Hover Action Button */}
+          <button className="mt-6 w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold tracking-wider text-sm hover:brightness-110 active:scale-95 transition-all duration-300 shadow-lg shadow-purple-500/30">
+            ADD TO CART
+          </button>
         </div>
       </div>
     </div>
@@ -76,28 +89,49 @@ export default function ShoeSlider() {
   const tripleShoes = [...shoes, ...shoes, ...shoes, ...shoes];
 
   return (
-    <div className="relative w-full overflow-hidden py-32 bg-[#fafafa] dark:bg-black font-sans">
-      {/* Edge Fades */}
-      <div className="absolute left-0 top-0 h-full w-32 md:w-80 bg-gradient-to-r from-[#fafafa] dark:from-black to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 h-full w-32 md:w-80 bg-gradient-to-l from-[#fafafa] dark:from-black to-transparent z-20 pointer-events-none" />
+    <div className="relative w-full overflow-hidden py-28 bg-[#0a0a0a] font-sans">
+      {/* Background Accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(at_center,#4f46e520_0%,transparent_70%)]" />
 
-      {/* Fast Infinite Slide */}
-      <div className="flex w-max animate-fast-slide items-center px-10">
+      {/* Edge Gradients */}
+      <div className="absolute left-0 top-0 h-full w-40 bg-gradient-to-r from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 h-full w-40 bg-gradient-to-l from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+
+      {/* Title */}
+      <div className="text-center mb-16">
+        <h2 className="text-5xl md:text-6xl font-black tracking-tighter bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
+          TRENDING DROPS
+        </h2>
+        <p className="text-zinc-500 mt-3">Limited. Exclusive. Yours.</p>
+      </div>
+
+      {/* Infinite Slider */}
+      <div className="flex w-max animate-fast-slide items-center gap-8">
         {tripleShoes.map((shoe, index) => (
           <ShoeCard key={index} shoe={shoe} />
         ))}
       </div>
 
       <style jsx>{`
-        .animate-fast-slide {
-          animation: slide 20s linear infinite;
+        .perspective-1000 {
+          perspective: 1000px;
         }
+
+        .animate-fast-slide {
+          animation: slide 18s linear infinite;
+        }
+
         .animate-fast-slide:hover {
           animation-play-state: paused;
         }
+
         @keyframes slide {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
       `}</style>
     </div>
