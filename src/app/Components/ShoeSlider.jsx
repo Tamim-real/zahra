@@ -4,80 +4,72 @@ import React from "react";
 const shoes = [
   {
     id: 1,
-    title: "Sports 3",
+    title: "SABRINA 3",
     price: "130",
-    category: "Basketball",
+    category: "BASKETBALL",
     image: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/01baa5ff-102a-4302-89f6-dfdf7e329614/SABRINA+3.png",
   },
   {
     id: 2,
-    title: "Sabrina 4",
+    title: "SABRINA 4",
     price: "145",
-    category: "Signature",
+    category: "SIGNATURE",
     image: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/00f99b39-4679-4fe9-96b8-ed36f417525c/SABRINA+3.png",
   },
   {
     id: 3,
-    title: "Prime(GS)",
+    title: "PRIME (GS)",
     price: "110",
-    category: "Kids Edition",
+    category: "KIDS EDITION",
     image: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/560681ff-4d0f-427f-9d58-f5b0475b4f24/SABRINA+3+OR.png",
   },
   {
     id: 4,
-    title: "Sports Gamer",
+    title: "SPORTS GAMER",
     price: "160",
-    category: "Limited",
+    category: "LIMITED",
     image: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/63a3e55d-640c-4d3c-babd-52361c10c0a7/SABRINA+3+GAMER.png",
   },
 ];
 
 const ShoeCard = ({ shoe }) => {
   return (
-    <div className="relative group w-[340px] md:w-[380px] perspective-1000 flex-shrink-0 px-4">
-      {/* Dynamic Glow */}
-      <div className="absolute -inset-8 bg-gradient-to-br from-purple-500 via-pink-500 to-violet-500 rounded-[60px] opacity-0 group-hover:opacity-30 blur-3xl transition-all duration-700" />
+    <div className="group relative w-[380px] px-6 py-10 transition-all duration-500">
+      {/* Dynamic Background Glow */}
+      <div className="absolute inset-x-10 top-20 bottom-10 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-      {/* Main Card */}
-      <div className="relative bg-white/90 dark:bg-zinc-950/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[52px] overflow-hidden shadow-2xl transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_35px_60px_-15px_rgb(168,85,247,0.4)]">
+      <div className="relative flex flex-col bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-white/5 rounded-[40px] overflow-hidden backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-none transition-transform duration-500 group-hover:-translate-y-2">
         
-        {/* Image Container */}
-        <div className="relative aspect-[4/4.2] m-6 mb-4 overflow-hidden rounded-[40px] bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800">
+        {/* Category Tag */}
+        <div className="absolute top-8 left-8 z-20">
+          <span className="text-[10px] font-bold tracking-[0.2em] text-zinc-400 dark:text-zinc-500 uppercase">
+            {shoe.category}
+          </span>
+        </div>
+
+        {/* Floating Price Badge */}
+        <div className="absolute top-6 right-6 z-20 bg-black dark:bg-white text-white dark:text-black px-4 py-1.5 rounded-full shadow-xl translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+          <p className="text-sm font-bold">${shoe.price}</p>
+        </div>
+
+        {/* Image Display */}
+        <div className="relative aspect-square flex items-center justify-center p-12">
+          <div className="absolute inset-0 bg-zinc-50/50 dark:bg-zinc-800/20 scale-90 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-1000" />
           <img
             src={shoe.image}
             alt={shoe.title}
-            className="w-[88%] h-auto object-contain transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:rotate-[-8deg] drop-shadow-2xl"
+            className="relative z-10 w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.2)] transition-all duration-700 ease-out group-hover:scale-110 group-hover:-rotate-12"
           />
-
-          {/* Category Badge */}
-          <div className="absolute top-6 right-6 px-4 py-1.5 text-xs font-medium tracking-widest bg-black/70 text-white backdrop-blur-md rounded-full border border-white/20">
-            {shoe.category}
-          </div>
         </div>
 
-        {/* Content */}
-        <div className="px-10 pb-10">
-          <div className="flex justify-between items-end">
-            <div>
-              <h3 className="text-3xl font-light text-zinc-900 dark:text-white tracking-tighter">
-                {shoe.title.split(" ")[0]}{" "}
-                <span className="font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  {shoe.title.split(" ").slice(1).join(" ")}
-                </span>
-              </h3>
-              <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">Nike • Limited Drop</p>
-            </div>
-
-            <div className="text-right">
-              <p className="text-4xl font-black bg-gradient-to-br from-purple-500 to-pink-500 bg-clip-text text-transparent leading-none">
-                ${shoe.price}
-              </p>
-            </div>
-          </div>
-
-          {/* Hover Action Button */}
-          <button className="mt-6 w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold tracking-wider text-sm hover:brightness-110 active:scale-95 transition-all duration-300 shadow-lg shadow-purple-500/30">
-            ADD TO CART
+        {/* Content Section */}
+        <div className="px-10 pb-10 pt-2 flex flex-col items-center text-center">
+          <h3 className="text-3xl font-black italic tracking-tighter text-zinc-900 dark:text-white uppercase">
+            {shoe.title}
+          </h3>
+          
+          <button className="mt-6 px-8 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black text-xs font-black tracking-widest rounded-xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 hover:scale-105 active:scale-95 uppercase">
+            Add to Bag
           </button>
         </div>
       </div>
@@ -86,54 +78,43 @@ const ShoeCard = ({ shoe }) => {
 };
 
 export default function ShoeSlider() {
-  const tripleShoes = [...shoes, ...shoes, ...shoes, ...shoes];
+  const infiniteShoes = [...shoes, ...shoes, ...shoes, ...shoes, ...shoes];
 
   return (
-    <div className="relative w-full overflow-hidden py-28 bg-[#0a0a0a] font-sans">
-      {/* Background Accent */}
-      <div className="absolute inset-0 bg-[radial-gradient(at_center,#4f46e520_0%,transparent_70%)]" />
-
-      {/* Edge Gradients */}
-      <div className="absolute left-0 top-0 h-full w-40 bg-gradient-to-r from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 h-full w-40 bg-gradient-to-l from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
-
-      {/* Title */}
-      <div className="text-center mb-16">
-        <h2 className="text-5xl md:text-6xl font-black tracking-tighter bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-          TRENDING DROPS
-        </h2>
-        <p className="text-zinc-500 mt-3">Limited. Exclusive. Yours.</p>
+    <section className="relative w-full overflow-hidden py-24 bg-zinc-50 dark:bg-[#080808] transition-colors duration-500">
+      {/* Header Info */}
+      <div className="max-w-7xl mx-auto px-10 mb-12 flex justify-between items-end">
+        <div>
+          <h2 className="text-sm font-bold tracking-[0.3em] text-indigo-500 uppercase mb-2">New Arrivals</h2>
+          <p className="text-5xl font-black italic tracking-tighter dark:text-white">NIKE BY YOU</p>
+        </div>
+        <p className="hidden md:block text-zinc-500 text-sm max-w-[200px] text-right font-medium">
+          Premium performance engineered for the next generation.
+        </p>
       </div>
 
-      {/* Infinite Slider */}
-      <div className="flex w-max animate-fast-slide items-center gap-8">
-        {tripleShoes.map((shoe, index) => (
-          <ShoeCard key={index} shoe={shoe} />
-        ))}
+      {/* Slider Container */}
+      <div className="relative">
+        {/* Edge Vignettes */}
+        <div className="absolute left-0 top-0 h-full w-40 bg-gradient-to-r from-zinc-50 dark:from-[#080808] to-transparent z-30 pointer-events-none" />
+        <div className="absolute right-0 top-0 h-full w-40 bg-gradient-to-l from-zinc-50 dark:from-[#080808] to-transparent z-30 pointer-events-none" />
+
+        <div className="flex w-max animate-infinite-scroll items-center hover:[animation-play-state:paused]">
+          {infiniteShoes.map((shoe, index) => (
+            <ShoeCard key={`${shoe.id}-${index}`} shoe={shoe} />
+          ))}
+        </div>
       </div>
 
       <style jsx>{`
-        .perspective-1000 {
-          perspective: 1000px;
+        @keyframes infinite-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-
-        .animate-fast-slide {
-          animation: slide 18s linear infinite;
-        }
-
-        .animate-fast-slide:hover {
-          animation-play-state: paused;
-        }
-
-        @keyframes slide {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+        .animate-infinite-scroll {
+          animation: infinite-scroll 40s linear infinite;
         }
       `}</style>
-    </div>
+    </section>
   );
 }
